@@ -166,8 +166,6 @@ POST hamlet/_delete_by_query
 
 ### Delete all documents that start by "ham"
 
-# Are here indicies meant?
-
 ```
-DELETE ham*
+DELETE ham*  # Are here indicies meant?
 ```
