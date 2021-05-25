@@ -1,4 +1,4 @@
-# Indexing Data
+## Indexing Data
 
 ###  Create the index `hamlet-raw` with one primary shard and four replicas
 
