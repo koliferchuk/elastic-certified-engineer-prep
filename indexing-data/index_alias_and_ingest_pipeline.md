@@ -182,6 +182,35 @@ PUT _ingest/pipeline/split_act_scene_line
 }
 ```
 
+```
+PUT _ingest/pipeline/split_act_scene_line
+{
+  "processors": [
+    {
+      "dissect": {
+        "field": "line_number",
+        "pattern": "%{number_act}.%{number_scene}.%{number_line}"
+      }
+    }
+  ]
+}
+
+```
+
+To verify created pipeline, use: 
+```
+POST _ingest/pipeline/split_act_scene_line/_simulate
+{
+  "docs": [
+    {
+      "_source": {
+        "line_number": "1.2.3"
+      }
+    }
+  ]
+}
+```
+
 ### Test the ingest pipeline on the following document
 
 ```

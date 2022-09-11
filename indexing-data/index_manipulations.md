@@ -57,6 +57,20 @@ POST hamlet-raw/_update/GAQ1H3kBrPPqJuURrndm
 ### In one request, update all documents in `hamlet-raw` by adding a new field named `speaker` with value "Hamlet"
 
 ```
+POST hamlet-raw/_update_by_query?conflicts=proceed
+{
+  "query": { 
+    "match_all": {}
+  },
+  "script": {
+    "source": "ctx._source.speaker = 'Hamlet'",
+    "lang": "painless"
+  }
+}
+```
+
+This one is not a proper solution!
+```
 POST _bulk
 { "update" : {"_id" : "1", "_index" : "hamlet-raw", "retry_on_conflict" : 3} }
 { "doc" : {"speaker" : "Hamlet"} }
@@ -66,6 +80,21 @@ POST _bulk
 
 ### Update the document with id "1" by renaming the field `line` into `text_entry`
 
+```
+POST hamlet-raw/_update/1
+{
+    "script" : {
+        "source": "ctx._source.text_entry = ctx._source.line; ctx._source.remove('line')",
+        "lang": "painless",
+        "params" : {
+            "count" : 4
+        }
+    }
+}
+```
+
+
+Or as a _bulk request (would work as well): 
 ```
 POST _bulk # Is bulk okay to use here?
 { "update" : {"_id" : "1", "_index" : "hamlet-raw", "retry_on_conflict" : 3} }
